@@ -36,48 +36,48 @@ kubectl rollout restart deployment claims-service
 
  curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-#  # Create monitoring namespace
-# kubectl create namespace monitoring
+ # Create monitoring namespace
+kubectl create namespace monitoring
 
-# # Add Helm repositories
-# helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-# helm repo add grafana https://grafana.github.io/helm-charts
-# helm repo update
+# Add Helm repositories
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
 
-# # Install Prometheus
-# helm install prometheus prometheus-community/prometheus \
-#     --namespace monitoring \
-#     --set server.persistentVolume.enabled=false \
-#     --set alertmanager.persistentVolume.enabled=false
+# Install Prometheus
+helm install prometheus prometheus-community/prometheus \
+    --namespace monitoring \
+    --set server.persistentVolume.enabled=false \
+    --set alertmanager.persistentVolume.enabled=false
 
-# # Install Grafana
-# helm install grafana grafana/grafana \
-#     --namespace monitoring \
-#     --set persistence.enabled=false \
-#     --set adminPassword=admin \
-#     --values - <<EOF
-# datasources:
-#   datasources.yaml:
-#     apiVersion: 1
-#     datasources:
-#     - name: Prometheus
-#       type: prometheus
-#       url: http://prometheus-server.monitoring.svc.cluster.local
-#       access: proxy
-#       isDefault: true
-# EOF
+# Install Grafana
+helm install grafana grafana/grafana \
+    --namespace monitoring \
+    --set persistence.enabled=false \
+    --set adminPassword=admin \
+    --values - <<EOF
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.monitoring.svc.cluster.local
+      access: proxy
+      isDefault: true
+EOF
 
-# # Wait for pods to be ready
-# echo "Waiting for Prometheus and Grafana pods to be ready..."
-# kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=prometheus -n monitoring --timeout=300s
-# kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=grafana -n monitoring --timeout=300s
+# Wait for pods to be ready
+echo "Waiting for Prometheus and Grafana pods to be ready..."
+kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=prometheus -n monitoring --timeout=300s
+kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=grafana -n monitoring --timeout=300s
 
-# # Instead of using minikube service, use port-forwarding
-# echo "Use the following commands in separate terminals to access Prometheus and Grafana:"
-# echo "kubectl port-forward -n monitoring svc/prometheus-server 9090:80"
-# echo "kubectl port-forward -n monitoring svc/grafana 3000:80"
+# Instead of using minikube service, use port-forwarding
+echo "Use the following commands in separate terminals to access Prometheus and Grafana:"
+echo "kubectl port-forward -n monitoring svc/prometheus-server 9090:80"
+echo "kubectl port-forward -n monitoring svc/grafana 3000:80"
 
-# echo "Prometheus will be available at: http://localhost:9090"
-# echo "Grafana will be available at: http://localhost:3000"
-# echo "Grafana default credentials - Username: admin, Password: admin"
+echo "Prometheus will be available at: http://localhost:9090"
+echo "Grafana will be available at: http://localhost:3000"
+echo "Grafana default credentials - Username: admin, Password: admin"
 
