@@ -124,14 +124,6 @@ kubectl rollout restart deployment ycompany-api
 kubectl rollout restart deployment -n ingress-nginx ingress-nginx-controller
 ```
 
-### View Logs
-
-View logs for a specific pod:
-
-```bash
-kubectl logs -l app=ycompany-api
-```
-
 ### List Services
 
 List all services:
