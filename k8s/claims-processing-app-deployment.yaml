@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: claims-processing-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: claims-processing-app
+  template:
+    metadata:
+      labels:
+        app: claims-processing-app
+    spec:
+      containers:
+      - name: claims-processing-app
+        image: claims-processing-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 4200
+        command: ["ng", "serve", "--host", "0.0.0.0", "--disable-host-check"]
+        workingDir: /app

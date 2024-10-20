@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: claims-processing-app
+spec:
+  selector:
+    app: claims-processing-app
+  ports:
+    - protocol: TCP
+      port: 4200
+      targetPort: 4200
+  type: ClusterIP

@@ -1,0 +1,69 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ycompany-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
+    nginx.ingress.kubernetes.io/load-balance: "ewma"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"  # Add this line
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: api.ycompany.local
+    http:
+      paths:
+      - path: /auth(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: auth-service
+            port:
+              number: 5000
+      - path: /claims(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: claims-service
+            port:
+              number: 5001
+      - path: /documents(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: document-service
+            port:
+              number: 5002
+      - path: /workshop(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: workshop-service
+            port:
+              number: 5003  
+  - host: customer.ycompany.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: claims-processing-app
+            port:
+              number: 4200
+
+  - host: internal.ycompany.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: claims-processing-app
+            port:
+              number: 4200
