@@ -1,6 +1,3 @@
-Here’s the complete response formatted as a Markdown README:
-
-```markdown
 # YCompany Auto Claims
 
 ## Overview
