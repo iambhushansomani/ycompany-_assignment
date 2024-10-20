@@ -1,0 +1,61 @@
+.claim-list-container {
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.mat-column-claimId,
+.mat-column-policyNumber,
+.mat-column-incidentDate,
+.mat-column-claimAmount,
+.mat-column-status,
+.mat-column-document,
+.mat-column-actions {
+  min-width: 100px;
+  max-width: 150px;
+}
+
+.mat-column-description,
+.mat-column-incidentLocation {
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.mat-mdc-header-cell,
+.mat-mdc-cell {
+  padding: 8px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.mat-mdc-row:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+.mat-mdc-row:hover {
+  background-color: #e0e0e0;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+  min-width: 80px;
+}
+
+.no-claims-message {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+}

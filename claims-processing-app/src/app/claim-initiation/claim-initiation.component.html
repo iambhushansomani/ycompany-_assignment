@@ -1,0 +1,79 @@
+<div class="claim-initiation-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Initiate New Claim</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-stepper linear #stepper>
+        <mat-step [stepControl]="claimForm">
+          <ng-template matStepLabel>Claim Details</ng-template>
+          <form [formGroup]="claimForm">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Policy Number</mat-label>
+              <input matInput formControlName="policyNumber" placeholder="Enter 10-digit policy number">
+              <mat-error *ngIf="claimForm.get('policyNumber')?.errors?.['required']">Policy number is required</mat-error>
+              <mat-error *ngIf="claimForm.get('policyNumber')?.errors?.['pattern']">Please enter a valid 10-digit policy number</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Incident Description</mat-label>
+              <textarea matInput formControlName="description" rows="4" placeholder="Describe the incident"></textarea>
+              <mat-error *ngIf="claimForm.get('description')?.errors?.['required']">Description is required</mat-error>
+              <mat-error *ngIf="claimForm.get('description')?.errors?.['minlength']">Description must be at least 10 characters long</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Incident Date</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="incidentDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="claimForm.get('incidentDate')?.errors?.['required']">Incident date is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Claim Amount</mat-label>
+              <input matInput type="number" formControlName="claimAmount" placeholder="Enter claim amount">
+              <mat-error *ngIf="claimForm.get('claimAmount')?.errors?.['required']">Claim amount is required</mat-error>
+              <mat-error *ngIf="claimForm.get('claimAmount')?.errors?.['min']">Claim amount must be positive</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Incident Location</mat-label>
+              <input matInput formControlName="incidentLocation" placeholder="Enter incident location">
+              <mat-error *ngIf="claimForm.get('incidentLocation')?.errors?.['required']">Incident location is required</mat-error>
+              <mat-error *ngIf="claimForm.get('incidentLocation')?.errors?.['maxlength']">Location cannot exceed 200 characters</mat-error>
+            </mat-form-field>
+
+            <div>
+              <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png" required>
+              <mat-error *ngIf="!selectedFile">Document is required</mat-error>
+            </div>
+
+            <div class="button-container">
+              <button mat-raised-button color="primary" matStepperNext [disabled]="claimForm.invalid || !selectedFile">Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="workshopForm">
+          <ng-template matStepLabel>Select Workshop</ng-template>
+          <form [formGroup]="workshopForm">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Select Workshop</mat-label>
+              <mat-select formControlName="workshopId">
+                <mat-option *ngFor="let workshop of workshops" [value]="workshop.Id">
+                  {{workshop.Name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="workshopForm.get('workshopId')?.errors?.['required']">Workshop selection is required</mat-error>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="workshopForm.invalid">Submit Claim</button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-stepper>
+    </mat-card-content>
+  </mat-card>
+</div>

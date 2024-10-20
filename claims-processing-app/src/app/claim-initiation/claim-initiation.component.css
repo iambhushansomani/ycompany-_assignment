@@ -1,0 +1,62 @@
+.claim-initiation-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+mat-card {
+  max-width: 800px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+button {
+  margin-right: 8px;
+}
+
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
+}
+
+.file-input {
+  margin-bottom: 16px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+input[type="file"] {
+  margin-bottom: 20px;
+}
+
+/* New styles for the Next button */
+.button-container button {
+  min-width: 120px;
+}
+
+/* Style for both Next and Submit buttons */
+mat-step form > div:last-child {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+mat-step form > div:last-child button {
+  min-width: 120px;
+}

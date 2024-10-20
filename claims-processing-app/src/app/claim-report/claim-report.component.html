@@ -1,0 +1,94 @@
+<div class="claim-report-container">
+  <h2>Claims Report</h2>
+  
+  <div class="date-range">
+    <mat-form-field>
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="generateReport()">Generate Report</button>
+  </div>
+
+  <mat-card *ngIf="reportData">
+    <mat-card-content>
+      <div class="summary-item">
+        <span class="summary-label">Total Claims:</span>
+        <span>{{ reportData.totalClaims }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Total Amount:</span>
+        <span>{{ reportData.totalAmount | currency }}</span>
+      </div>
+      
+      <div class="status-breakdown">
+        <div class="status-list">
+          <h3>Status Breakdown</h3>
+          <div *ngFor="let status of statuses" class="status-item">
+            <span>{{ status }}:</span>
+            <span class="status-count">{{ reportData.statusCounts[status] || 0 }}</span>
+
+          </div>
+        </div>
+        <div class="pie-chart">
+          <canvas baseChart
+            [data]="pieChartData"
+            [options]="pieChartOptions"
+            [type]="pieChartType">
+          </canvas>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="claims && claims.length > 0">
+    <mat-card-content>
+      <table mat-table [dataSource]="claims" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.ClaimId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let claim"> 
+            <span class="status-badge" [style.background-color]="getStatusColor(claim.Status)">
+              {{claim.Status}}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef> Amount </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.ClaimAmount | currency}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="submissionDate">
+          <th mat-header-cell *matHeaderCellDef> Submission Date </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.IncidentDate | date}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="claimType">
+          <th mat-header-cell *matHeaderCellDef> Policy Number </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.PolicyNumber}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="!claims || claims.length === 0" class="no-data-message">
+    No claims data available for the selected date range.
+  </div>
+</div>

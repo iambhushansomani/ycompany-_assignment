@@ -1,0 +1,23 @@
+<div class="login-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>YCompany Auto Claims Login</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Username</mat-label>
+            <input matInput [(ngModel)]="username" name="username" required>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput [(ngModel)]="password" name="password" type="password" required>
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" type="submit" class="full-width">Login</button>
+        </form>
+        <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>

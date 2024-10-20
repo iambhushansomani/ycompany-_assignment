@@ -1,0 +1,98 @@
+<div class="claim-list-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Track Your Claims</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="claims" class="mat-elevation-z8" *ngIf="claims.length > 0">
+        <!-- Claim ID Column -->
+        <ng-container matColumnDef="claimId">
+          <th mat-header-cell *matHeaderCellDef> Claim ID </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.ClaimId}} </td>
+        </ng-container>
+
+        <!-- Policy Number Column -->
+        <ng-container matColumnDef="policyNumber">
+          <th mat-header-cell *matHeaderCellDef> Policy Number </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.PolicyNumber}} </td>
+        </ng-container>
+
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.Description}} </td>
+        </ng-container>
+
+        <!-- Incident Date Column -->
+        <ng-container matColumnDef="incidentDate">
+          <th mat-header-cell *matHeaderCellDef> Incident Date </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.IncidentDate | date}} </td>
+        </ng-container>
+
+        <!-- Claim Amount Column -->
+        <ng-container matColumnDef="claimAmount">
+          <th mat-header-cell *matHeaderCellDef> Claim Amount </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.ClaimAmount | currency}} </td>
+        </ng-container>
+
+        <!-- Incident Location Column -->
+        <ng-container matColumnDef="incidentLocation">
+          <th mat-header-cell *matHeaderCellDef> Incident Location </th>
+          <td mat-cell *matCellDef="let claim"> {{claim.IncidentLocation}} </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let claim"> 
+            <span class="status-badge" [style.background-color]="getStatusColor(claim.Status)">
+              {{claim.Status}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Document Column -->
+        <ng-container matColumnDef="document">
+          <th mat-header-cell *matHeaderCellDef> Uploaded Documents </th>
+          <td mat-cell *matCellDef="let claim">
+            <button mat-icon-button color="primary" (click)="viewDocument(claim.DocumentUuid)" *ngIf="claim.DocumentUuid">
+              <mat-icon>file_download</mat-icon>
+            </button>
+            <span *ngIf="!claim.DocumentUuid">No document</span>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let claim">
+            <button mat-icon-button color="primary" (click)="openClaimDetailsDialog(claim)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="openAssessmentAdjustmentDialog(claim)" *ngIf="canAssessOrAdjust(claim)">
+              <mat-icon>assessment</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="updateClaimStatus(claim, getNextStatus(claim.Status))" *ngIf="canUpdateStatus(claim)">
+              <mat-icon>update</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="openInvoiceUploadDialog(claim)" *ngIf="canUploadInvoice(claim)">
+              <mat-icon>receipt</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="viewInvoice(claim)" *ngIf="canViewInvoice(claim)">
+              <mat-icon>description</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="payInvoice(claim)" *ngIf="canPayInvoice(claim)">
+              <mat-icon>payment</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <div *ngIf="claims.length === 0" class="no-claims-message">
+        No claims found for this user.
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

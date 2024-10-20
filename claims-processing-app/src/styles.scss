@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+@use 'theme' as theme;
+@include mat.core();
+
+// Include the theme styles for all components
+@include mat.all-component-themes(theme.$my-theme);
+
+// Your global styles here
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f5f5f5;
+}
+
+// ... other styles ...

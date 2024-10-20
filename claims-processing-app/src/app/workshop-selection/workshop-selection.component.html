@@ -1,0 +1,18 @@
+<div class="workshop-selection-container">
+    <h2>Select a Workshop</h2>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter Pincode</mat-label>
+      <input matInput [(ngModel)]="pincode" (keyup.enter)="searchWorkshops()">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="searchWorkshops()">Search Workshops</button>
+  
+    <mat-list *ngIf="workshops.length > 0">
+      <mat-list-item *ngFor="let workshop of workshops" (click)="selectWorkshop(workshop)" [class.selected]="workshop === selectedWorkshop">
+        <h3 matLine>{{ workshop.name }}</h3>
+        <p matLine>{{ workshop.address }}</p>
+        <p matLine>{{ workshop.phone }}</p>
+      </mat-list-item>
+    </mat-list>
+  
+    <button mat-raised-button color="primary" (click)="submitWorkshop()" [disabled]="!selectedWorkshop">Submit Selection</button>
+  </div>
